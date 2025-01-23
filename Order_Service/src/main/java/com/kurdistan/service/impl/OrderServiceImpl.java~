@@ -1,0 +1,39 @@
+package com.kurdistan.service.impl;
+
+import com.kurdistan.dto.OrderDTO;
+import com.kurdistan.mapper.OrderMapper;
+import com.kurdistan.model.Order;
+import com.kurdistan.db.dao.OrderRepository;
+import com.kurdistan.service.interfaces.OrderService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderServiceImpl implements OrderService {
+
+    private final OrderRepository orderRepository;
+
+    public OrderServiceImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
+    @Override
+    public OrderDTO getOrderById(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        // Använd MapStruct för att mappa från entitet till DTO
+        return OrderMapper.INSTANCE.orderToOrderDTO(order);
+    }
+
+    @Override
+    public OrderDTO createOrder(OrderDTO orderDTO) {
+        // Mappa från DTO till entitet
+        Order order = OrderMapper.INSTANCE.orderDTOToOrder(orderDTO);
+
+        // Spara order i databasen
+        Order savedOrder = orderRepository.save(order);
+
+        // Mappa tillbaka till DTO
+        return OrderMapper.INSTANCE.orderToOrderDTO(savedOrder);
+    }
+}

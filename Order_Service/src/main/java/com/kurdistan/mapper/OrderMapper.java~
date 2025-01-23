@@ -1,0 +1,17 @@
+package com.kurdistan.mapper;
+
+
+import com.kurdistan.dto.OrderDTO;
+import com.kurdistan.model.Order;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
+@Mapper(uses = {ProductMapper.class, CustomerMapper.class})
+public interface OrderMapper {
+
+    OrderMapper INSTANCE = Mappers.getMapper(OrderMapper.class);
+
+    Order orderDTOToOrder(OrderDTO orderDTO);
+
+    OrderDTO orderToOrderDTO(Order order);
+}
