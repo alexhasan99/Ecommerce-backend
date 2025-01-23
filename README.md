@@ -18,7 +18,7 @@ This repository contains the backend microservices for an e-commerce application
 - **JWT (JSON Web Token)**: For secure authentication.
 - **MapStruct**: For mapping between DTOs and entities.
 - **Maven**: For dependency management.
-- **GitHub Actions** (optional): For CI/CD pipelines.
+- **GitHub Actions**: For CI/CD pipelines.
 
 ---
 
