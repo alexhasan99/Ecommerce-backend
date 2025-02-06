@@ -1,7 +1,9 @@
 package com.kurdistan.service.impl;
 
 import com.kurdistan.db.dao.UserDao;
+import com.kurdistan.dto.AddressDTO;
 import com.kurdistan.dto.UserDTO;
+import com.kurdistan.mapper.AddressMapper;
 import com.kurdistan.mapper.UserMapper;
 import com.kurdistan.model.User;
 import com.kurdistan.service.interfaces.UserService;
@@ -16,6 +18,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
     private final UserMapper userMapper = UserMapper.INSTANCE;
+
+    private final AddressMapper addressMapper = AddressMapper.INSTANCE;
 
     public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;

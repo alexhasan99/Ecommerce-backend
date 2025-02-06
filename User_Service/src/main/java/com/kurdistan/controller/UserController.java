@@ -45,7 +45,7 @@ public class UserController {
     }
 
     // Hämta kundprofil baserat på ID från JWT
-    @GetMapping("/profile")
+    @GetMapping()
     public ResponseEntity<UserDTO> getUserProfile(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         String userId = jwtUtils.getUserIdFromToken(token);
@@ -54,15 +54,9 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Hämta alla kunder (för administratörer eller särskilda roller)
-    @GetMapping
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        List<UserDTO> user = userService.getAllUsers();
-        return ResponseEntity.ok(user);
-    }
 
     // Uppdatera kund baserat på ID från JWT
-    @PutMapping("/profile")
+    @PutMapping("/edit")
     public ResponseEntity<UserDTO> updateUser(@RequestHeader("Authorization") String authHeader,
                                               @RequestBody UserDTO userDTO) {
         String token = authHeader.replace("Bearer ", "");
@@ -72,7 +66,7 @@ public class UserController {
     }
 
     // Ta bort kund baserat på ID från JWT
-    @DeleteMapping("/profile")
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteUser(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         String userId = jwtUtils.getUserIdFromToken(token);
