@@ -3,6 +3,7 @@ package com.kurdistan.controller;
 import com.kurdistan.dto.UserDTO;
 import com.kurdistan.security.JwtUtils;
 import com.kurdistan.service.interfaces.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,30 +27,19 @@ public class UserController {
         return ResponseEntity.ok("Hello");
     }
 
-
-    @PostMapping
-    public ResponseEntity<UserDTO> createUser(@RequestHeader("Authorization") String authHeader,
-                                              @RequestBody UserDTO userDTO) {
-        String token = authHeader.replace("Bearer ", "");
-
-        // Hämta userId och email från JWT-tokenen
-        String userId = jwtUtils.getUserIdFromToken(token);
-        String email = jwtUtils.getEmailFromToken(token);
-
-        // Sätt userId och email i customerDTO
-        userDTO.setId(userId);
-        userDTO.setEmail(email);
-
+    @PostMapping("/create-user")
+    public ResponseEntity<UserDTO> registerUser(@RequestBody UserDTO userDTO) {
         UserDTO createdUser = userService.createUser(userDTO);
-        return ResponseEntity.ok(createdUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     // Hämta kundprofil baserat på ID från JWT
-    @GetMapping()
+    @GetMapping("/profile")
     public ResponseEntity<UserDTO> getUserProfile(@RequestHeader("Authorization") String authHeader) {
         String token = authHeader.replace("Bearer ", "");
         String userId = jwtUtils.getUserIdFromToken(token);
         Optional<UserDTO> user = userService.getUserById(userId);
+        System.out.println(user);
         return user.map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
